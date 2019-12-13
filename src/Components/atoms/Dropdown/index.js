@@ -19,10 +19,10 @@ class Dropdown extends PureComponent {
     this.toggleDropdown()
   }
 
-  handleItemClick = (id)=>(e)=>{
+  handleItemClick = (elm)=>(e)=>{
     const {onItemSelect} = this.props;
     this.toggleDropdown();
-    onItemSelect(id);
+    onItemSelect(elm);
   }
 
   render() {
@@ -42,8 +42,8 @@ class Dropdown extends PureComponent {
         </button>
         {open &&
           <div className="dropdown-menu" aria-labelledby="dropdownMenuButton" style={{display:'block'}}>
-            {data.map((elm, index)=>(
-              <button key={index} className="dropdown-item" type="button" onClick={this.handleItemClick(elm.id)}>{elm[config]}</button>
+            {data.map((elm)=>(
+              <button key={elm} className="dropdown-item" type="button" onClick={this.handleItemClick(elm)}>{elm}</button>
             ))}
           </div>
         }

@@ -12,16 +12,20 @@ class App extends PureComponent {
       products:[],
       bands:[],
       subbands:[],
-      selectedProduct:null,
-      selectedBand:null,
-      selectedSubBand:null
+      selectedProduct:'',
+      selectedBand:'',
+      selectedSubBand:''
     };
   }
   componentDidMount= async ()=> {
     try{
       const res = await axios.get('http://s3.ap-south-1.amazonaws.com/ypui-resources/InterviewQns/Products.json');
       const data = res.data;
-      const products = data.map((elm)=>(elm.Productid))
+      const set = new Set();
+      data.forEach((elm)=>{
+        set.add(elm.Productid.name);
+      })
+      const products = [...set];
       this.setState({products, data});
     }catch(err){
 
@@ -29,22 +33,30 @@ class App extends PureComponent {
 
   }
 
-  handleProductClick = (id)=>{
+  handleProductClick = (title)=>{
     const {data} = this.state;
-    const bands = data.filter((elm)=>(elm.Productid.id===id)).map((elm)=>(elm.Band));
-    console.log(bands);
-    this.setState({bands, subbands:[], selectedProduct:id})
+    let bands = data.filter((elm)=>(elm.Productid.name===title));
+    const set = new Set();
+    data.forEach((elm)=>{
+      set.add(elm.Band.val);
+    })
+    bands = [...set];
+    this.setState({bands, subbands:[], selectedProduct:title})
   }
 
-  handleBandClick = (id)=>{
+  handleBandClick = (title)=>{
     const {data} = this.state;
-    const subbands = data.filter((elm)=>(elm.Band.id===id)).map((elm)=>(elm.Subband));
-    console.log(subbands);
-    this.setState({subbands, selectedBand:id})
+    let subbands = data.filter((elm)=>(elm.Band.name===title));
+    const set = new Set();
+    data.forEach((elm)=>{
+      set.add(elm.Subband.val);
+    })
+    subbands = [...set];
+    this.setState({subbands, selectedBand:title})
   }
 
-  handleSubBandClick = (id)=>{
-    this.setState({selectedSubBand:id});
+  handleSubBandClick = (title)=>{
+    this.setState({selectedSubBand:title});
   }
 
   render() {
@@ -64,13 +76,13 @@ class App extends PureComponent {
           />
         </div>
         <div className="col-md-4">
-          {`Product_id:${selectedProduct}`}
+          {`Product_name: ${selectedProduct}`}
         </div>
         <div className="col-md-4">
-          {`Band_id:${selectedBand}`}
+          {`Band_name: ${selectedBand}`}
         </div>
         <div className="col-md-4">
-          {`SubBand_id:${selectedSubBand}`}
+          {`SubBand_name: ${selectedSubBand}`}
         </div>
       </div>
     )
