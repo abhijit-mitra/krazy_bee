@@ -40,7 +40,7 @@ class Dropdown extends PureComponent {
           >
           {title}
         </button>
-        {open &&
+        {open && Boolean(data.length) &&
           <div className="dropdown-menu" aria-labelledby="dropdownMenuButton" style={{display:'block'}}>
             {data.map((elm)=>(
               <button key={elm} className="dropdown-item" type="button" onClick={this.handleItemClick(elm)}>{elm}</button>
