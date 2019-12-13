@@ -35,24 +35,25 @@ class App extends PureComponent {
 
   handleProductClick = (title)=>{
     const {data} = this.state;
+    console.log(data)
     let bands = data.filter((elm)=>(elm.Productid.name===title));
     const set = new Set();
-    data.forEach((elm)=>{
+    bands.forEach((elm)=>{
       set.add(elm.Band.val);
     })
     bands = [...set];
-    this.setState({bands, subbands:[], selectedProduct:title})
+    this.setState({bands, subbands:[], selectedProduct:title, selectedBand:'', selectedSubBand:''})
   }
 
   handleBandClick = (title)=>{
     const {data} = this.state;
-    let subbands = data.filter((elm)=>(elm.Band.name===title));
+    let subbands = data.filter((elm)=>(elm.Band.val===title));
     const set = new Set();
-    data.forEach((elm)=>{
+    subbands.forEach((elm)=>{
       set.add(elm.Subband.val);
     })
     subbands = [...set];
-    this.setState({subbands, selectedBand:title})
+    this.setState({subbands, selectedBand:title, selectedSubBand:''})
   }
 
   handleSubBandClick = (title)=>{
